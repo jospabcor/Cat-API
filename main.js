@@ -16,23 +16,16 @@ async function loadRandomCats() {
   if (res.status !== 200) {
     spanError.innerHTML = "Hubo un error: " + res.status + data.message;
   } else {
-    const btnrdn1 = document.getElementById("btnrdn1");
-    const btnrdn2 = document.getElementById("btnrdn2");
-    const btnrdn3 = document.getElementById("btnrdn3");
-    const btnrdn4 = document.getElementById("btnrdn4");
-    const btnrdn5 = document.getElementById("btnrdn5");
-
-    btnrdn1.addEventListener("click", () => saveFavouriteCat(data[0].id));
-    btnrdn2.addEventListener("click", () => saveFavouriteCat(data[1].id));
-    btnrdn3.addEventListener("click", () => saveFavouriteCat(data[2].id));
-    btnrdn4.addEventListener("click", () => saveFavouriteCat(data[3].id));
-    btnrdn5.addEventListener("click", () => saveFavouriteCat(data[4].id));
+    const btnRdnGnrl = document.querySelectorAll('.btnRdnGnrl');
+    
     let img = document.querySelectorAll(".catImg");
     console.log(data);
     img.forEach((cat, pos) => {
       cat.src = data[pos].url;
-      cat.setAttribute("image-url", data[pos].url);
     });
+    btnRdnGnrl.forEach((cat,pos) =>{
+      cat.onclick =() => saveFavouriteCat(data[pos].id)
+    })
   }
 }
 
@@ -88,6 +81,7 @@ async function saveFavouriteCat(id) {
     spanError.innerHTML = "Hubo un error: " + res.status + " " + data.message;
   } else {
     loadFavouriteCats();
+    loadRandomCats();
   }
 }
 
@@ -102,11 +96,11 @@ async function deleteFavouriteCat(id) {
     spanError.innerHTML = "Hubo un error: " + res.status + " " + data.message;
   } else {
     console.log("gato eliminado de favoritos");
+    loadFavouriteCats();
   }
 }
 
 const btn = document.querySelector(".rdnCat");
-
 btn.onclick = loadRandomCats;
 
 loadRandomCats();
